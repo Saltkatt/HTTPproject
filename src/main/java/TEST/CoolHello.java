@@ -10,7 +10,8 @@ public class CoolHello implements SayHello {
 
     @Override
     public HTTPResponse sayHi(@AnnotationsClass.Param("name")String name) {
-        String html = "<!DOCTYPE html><html><h3 style='color:red;'>HELLO "+name+"</h3></html>";
+        String html = "<!DOCTYPE html><html><h3 style='color:red;'>HELLO "+name+"</h3>"+"<" +
+                "<form method='GET'><input type='text' name='name'/><input type='submit'/></form></html>";
         byte[] body = html.getBytes();
         HTTPResponse response = new HTTPResponse();
         response.setStatus(200).setMessage("OK").setContentType("text/html").setContentLength(body.length).setBody(body);

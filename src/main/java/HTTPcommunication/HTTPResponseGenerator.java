@@ -29,23 +29,23 @@ public class HTTPResponseGenerator {
         String q = request.getQuery();
         System.out.println(q);
 
-//        if(request.getQuery().contains("name"))
-//            name = q.substring(q.indexOf("name")+5);
-//        else
-//            name = q.substring(q.indexOf("=")+1);
-        String key = "";
-        String value = "";
-        if(!q.isEmpty() && q != null && !q.equals("") && q.contains("=")) {
-            key = q.substring(q.indexOf("?")+1, q.indexOf("="));
-            value = q.substring(q.indexOf("=")+1);
-        }
+        if(request.getQuery().contains("name"))
+            name = q.substring(q.indexOf("name")+5);
+        else
+            name = q.substring(q.indexOf("=")+1);
+//        String key = "";
+//        String value = "";
+//        if(!q.isEmpty() && q != null && !q.equals("") && q.contains("=")) {
+//            key = q.substring(q.indexOf("?")+1, q.indexOf("="));
+//            value = q.substring(q.indexOf("=")+1);
+//        }
 
         if(request.getURL().equals("/Hello")){
             ServiceLoader<SayHello> loader = ServiceLoader.load(SayHello.class);
             Iterator<SayHello> it = loader.iterator();
             for(SayHello h : loader){
                 if(h.getClass().getAnnotation(AnnotationsClass.Page.class).value().equals("/Hello"))
-                    return h.toJSON(key, value);
+                    return h.sayHi(name);
             }
 
 
