@@ -13,4 +13,10 @@ public class AnnotationsClass {
     public @interface Page{
         String value() default "/default";
     }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.PARAMETER})
+    public @interface Param{
+        String value() default "Berit";
+    }
 }
