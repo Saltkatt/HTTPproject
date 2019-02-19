@@ -1,7 +1,7 @@
 package HTTPcommunication;
 
-import serviceLoader.HomeForCoolAnnotations;
-import serviceLoader.SayHello;
+import TEST.AnnotationsClass;
+import TEST.SayHello;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,25 +16,36 @@ public class HTTPResponseGenerator {
     //private  boolean isFile = true;
 
     public static HTTPResponse getHTTPResponse(HTTPRequest request){
+
         String message = "OK";
         String contentType = "";
         int status = 200;
 
         String url = "";
+        if(request.getURL().equals("/Hello")){
+            ServiceLoader<SayHello> loader = ServiceLoader.load(SayHello.class);
+            Iterator<SayHello> it = loader.iterator();
+            for(SayHello h : loader){
+                if(h.getClass().getAnnotation(AnnotationsClass.Page.class).value().equals("/Hello"))
+                    return h.sayHi();
+            }
+
+
+
+        }
+
         if(!(request.getURL().equals("/")) && !(request.getURL().equals("")))
             url = request.getURL().substring(1);
 
 
-        if(!request.getURL().isEmpty() && request.getURL().contains(".")){
+        if(!request.getURL().isEmpty() && request.getURL().contains(".")) {
             String fileEnding = request.getURL().substring(request.getURL().indexOf("."));
             contentType = contentTypeRequested(fileEnding);
-        }else
-            isFile = false;
-
+        }
 
         byte[] content = new byte[0];
 
-        if(!(request.getURL().isEmpty()) || isFile) {
+        if(!(request.getURL().isEmpty())) {
 
             File file = null;
 
@@ -61,16 +72,6 @@ public class HTTPResponseGenerator {
             }
         }
 
-        if(url.equals("Hello")){
-            ServiceLoader<SayHello> loader = ServiceLoader.load(SayHello.class);
-            Iterator<SayHello> it = loader.iterator();
-            while(it.hasNext()){
-                SayHello h = it.next();
-                if(h.getClass().getAnnotation(HomeForCoolAnnotations.Page.class).value().equals("/Hello"))
-                    content = h.sayHi().getBytes();
-                    contentType = "text/plain";
-            }
-        }
 
         int contentLength = content.length;
         String connection = request.getConnection();
