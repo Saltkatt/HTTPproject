@@ -1,15 +1,21 @@
 package HTTPcommunication;
 
+import serviceLoader.HomeForCoolAnnotations;
+import serviceLoader.SayHello;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Iterator;
+import java.util.ServiceLoader;
 
 public class HTTPResponseGenerator {
 
     private final static String WEB_ROOT = ".//web";
+    private static boolean isFile;
+    //private  boolean isFile = true;
 
     public static HTTPResponse getHTTPResponse(HTTPRequest request){
-
         String message = "OK";
         String contentType = "";
         int status = 200;
@@ -22,12 +28,13 @@ public class HTTPResponseGenerator {
         if(!request.getURL().isEmpty() && request.getURL().contains(".")){
             String fileEnding = request.getURL().substring(request.getURL().indexOf("."));
             contentType = contentTypeRequested(fileEnding);
-        }
+        }else
+            isFile = false;
 
 
         byte[] content = new byte[0];
 
-        if(!(request.getURL().isEmpty())) {
+        if(!(request.getURL().isEmpty()) || isFile) {
 
             File file = null;
 
@@ -51,6 +58,17 @@ public class HTTPResponseGenerator {
                 content = Files.readAllBytes(file.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        if(url.equals("Hello")){
+            ServiceLoader<SayHello> loader = ServiceLoader.load(SayHello.class);
+            Iterator<SayHello> it = loader.iterator();
+            while(it.hasNext()){
+                SayHello h = it.next();
+                if(h.getClass().getAnnotation(HomeForCoolAnnotations.Page.class).value().equals("/Hello"))
+                    content = h.sayHi().getBytes();
+                    contentType = "text/plain";
             }
         }
 

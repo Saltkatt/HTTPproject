@@ -21,7 +21,7 @@ public class HttpServer {
             System.out.println("Server started on port " + PORT);
 
             clientSocket = serverSocket.accept(); //wait on this line until a client connects to localhost:PORT
-            System.out.println("Client connected");
+            System.out.println("ClientCommunicator connected");
             listen();
 
         } catch (IOException e) {

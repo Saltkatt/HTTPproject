@@ -1,6 +1,6 @@
 package main;
 
-import HTTPcommunication.Client;
+import HTTPcommunication.ClientCommunicator;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -36,13 +36,13 @@ public class Server {
 
                     System.out.println("Connection detected!");
 
-                    //printwriter skriver till header. allt från client till server är inputstream
+                    //printwriter skriver till header. allt från clientCommunicator till server är inputstream
                     PrintWriter outChar = new PrintWriter(socket.getOutputStream());
                     BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                    Client client = new Client(socket, outChar, out, in);
-                    client.start();
+                    ClientCommunicator clientCommunicator = new ClientCommunicator(socket, outChar, out, in);
+                    clientCommunicator.start();
 
                 }
             }catch(IOException e){

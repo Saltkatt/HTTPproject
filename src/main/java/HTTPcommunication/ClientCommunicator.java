@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client extends Thread{
+public class ClientCommunicator extends Thread{
 
     private Socket clientSocket;
     private PrintWriter out;
@@ -21,7 +21,7 @@ public class Client extends Thread{
     private HTTPRequest request;
 
 
-    public Client(Socket socket, PrintWriter outChar, OutputStream out, BufferedReader in) throws IOException {
+    public ClientCommunicator(Socket socket, PrintWriter outChar, OutputStream out, BufferedReader in) throws IOException {
         this.clientSocket = socket;
         this.out = outChar;
         this.outByte = out;
@@ -112,9 +112,8 @@ public class Client extends Thread{
     }
 
      public void sendResponse(HTTPResponse response){
-        out.write(response.getHTTP_VERSION()+" "+response.getStatus()+" "+response.getMessage()+"\r\n"); // Version & status code
-        out.write("Content-Type: "+response.getContentType()+"\r\n"); // The type of data
-        out.write("Content-Length: "+response.getContentLength()+"\r\n\n");
+        out.print(response);
+        out.println();
         out.flush();
     }
 
