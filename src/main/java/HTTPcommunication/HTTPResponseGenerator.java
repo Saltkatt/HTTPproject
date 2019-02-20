@@ -32,7 +32,7 @@ public class HTTPResponseGenerator {
         if(request.getQuery().contains("name"))
             name = q.substring(q.indexOf("name")+5);
         else
-            name = q.substring(q.indexOf("=")+1);
+            name = "default";
 //        String key = "";
 //        String value = "";
 //        if(!q.isEmpty() && q != null && !q.equals("") && q.contains("=")) {
@@ -40,17 +40,15 @@ public class HTTPResponseGenerator {
 //            value = q.substring(q.indexOf("=")+1);
 //        }
 
-        if(request.getURL().equals("/Hello")){
+
             ServiceLoader<SayHello> loader = ServiceLoader.load(SayHello.class);
             Iterator<SayHello> it = loader.iterator();
             for(SayHello h : loader){
-                if(h.getClass().getAnnotation(AnnotationsClass.Page.class).value().equals("/Hello"))
+                if(h.getClass().getAnnotation(AnnotationsClass.Page.class).value().equals(request.getURL()))
                     return h.sayHi(name);
             }
 
 
-
-        }
 
         if(!(request.getURL().equals("/")) && !(request.getURL().equals("")))
             url = request.getURL().substring(1);

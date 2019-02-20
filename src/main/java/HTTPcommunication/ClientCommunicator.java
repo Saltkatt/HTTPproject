@@ -41,10 +41,12 @@ public class ClientCommunicator extends Thread{
 
 
 
-                        //Till kommentar sidan
+                        //Till ko, mmentar sidan
                         if(request.getMethod().equals("POST")){
 
-                            String httpBody = new String(request.getBody()); //byte array to string
+                            String httpBody = new String(request.getBody(), "UTF-8"); //byte array to string
+                            System.out.println(httpBody);
+                            byte[] content = request.getBody();
                             String s = httpBody.replaceAll("\\+", " "); //all blank spaces became + symbols... this fixes it back to normal
                             String keyValue = s.substring(s.indexOf("=") + 1); //only take the key from key/value
 

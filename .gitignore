@@ -2,3 +2,6 @@
 out
 target
 *.json
+*.db
+*.iml
+.gitignore
